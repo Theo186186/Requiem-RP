@@ -18,6 +18,12 @@ function closeButtonRow() {
   );
 }
 
+function getHighestRoleName(member) {
+  if (!member) return 'Staff';
+  const roles = member.roles.cache.filter((r) => r.id !== member.guild.id).sort((a, b) => b.position - a.position);
+  return roles.first() ? roles.first().name : 'Staff';
+}
+
 async function createTicket(interaction, categoryConfig, config) {
   const client = interaction.client;
   const user = interaction.user;
@@ -168,7 +174,13 @@ async function closeTicket(interaction, config) {
 
   const user = await client.users.fetch(userId).catch(() => null);
   if (user) {
-    user.send(`🔒 Le ticket \`#${ticketInfo.number}\` a été supprimé avec succès !`).catch(() => null);
+    let closeMessage = `🔒 Le ticket \`#${ticketInfo.number}\` a été supprimé avec succès !`;
+    if (interaction.guild && interaction.member) {
+      const roleName = getHighestRoleName(interaction.member);
+      const displayName = interaction.member.displayName;
+      closeMessage = `**(${roleName} ${displayName})** a fermé le ticket.`;
+    }
+    user.send(closeMessage).catch(() => null);
   }
 
   const channel = ticketGuild ? ticketGuild.channels.cache.get(ticketInfo.channelId) : null;
