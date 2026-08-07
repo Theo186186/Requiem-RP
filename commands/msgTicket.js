@@ -28,7 +28,8 @@ module.exports = {
 
     const content = interaction.options.getString('message');
     const roleName = getHighestRoleName(interaction.member);
-    const formatted = `**(${roleName})** ${content}`;
+    const displayName = interaction.member ? interaction.member.displayName : interaction.user.username;
+    const formatted = `**(${roleName} ${displayName})** ${content}`;
 
     const sent = await user.send(formatted).catch(() => null);
     if (!sent) {
