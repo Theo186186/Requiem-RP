@@ -1,6 +1,8 @@
+const { EmbedBuilder } = require('discord.js');
 const config = require('../config.json');
 const { createTicket, closeTicket } = require('../utils/ticket');
 const { canUseBot } = require('../utils/permissions');
+const { getPending, deletePending } = require('../utils/pendingPanels');
 
 module.exports = {
   name: 'interactionCreate',
@@ -29,10 +31,35 @@ module.exports = {
         await closeTicket(interaction, config);
         return;
       }
+
+      if (interaction.isModalSubmit() && interaction.customId === 'panel_modal') {
+        const pending = getPending(interaction.user.id);
+        if (!pending) {
+          return interaction.reply({ content: '❌ Session expirée, relance la commande /msg.', ephemeral: true });
+        }
+        deletePending(interaction.user.id);
+        await interaction.deferReply({ ephemeral: true });
+
+        const text = interaction.fields.getTextInputValue('panel_message');
+        const embed = new EmbedBuilder().setDescription(text).setColor(pending.color);
+        if (pending.titre) embed.setTitle(pending.titre);
+        if (pending.banniere) embed.setImage(pending.banniere);
+
+        const channel = await interaction.client.channels.fetch(pending.channelId).catch(() => null);
+        if (channel) {
+          await channel.send({ embeds: [embed] }).catch((err) => console.error('[Msg Annonce] Erreur:', err.message));
+        }
+        await interaction.editReply({ content: '✅ Message envoyé.' });
+        return;
+      }
     } catch (err) {
       console.error('[Interaction] Erreur:', err);
-      if (interaction.isRepliable() && !interaction.replied && !interaction.deferred) {
-        interaction.reply({ content: '❌ Une erreur est survenue.', ephemeral: true }).catch(() => null);
+      if (interaction.isRepliable()) {
+        if (interaction.deferred && !interaction.replied) {
+          interaction.editReply({ content: '❌ Une erreur est survenue.' }).catch(() => null);
+        } else if (!interaction.replied) {
+          interaction.reply({ content: '❌ Une erreur est survenue.', ephemeral: true }).catch(() => null);
+        }
       }
     }
   }
