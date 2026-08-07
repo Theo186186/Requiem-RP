@@ -1,5 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const config = require('../config.json');
+const { SlashCommandBuilder } = require('discord.js');
 const { readJSON } = require('../utils/storage');
 
 function getHighestRoleName(member) {
@@ -29,18 +28,13 @@ module.exports = {
 
     const content = interaction.options.getString('message');
     const roleName = getHighestRoleName(interaction.member);
+    const formatted = `**(${roleName})** ${content}`;
 
-    const embed = new EmbedBuilder()
-      .setTitle(`${roleName} — ${interaction.user.username}`)
-      .setDescription(content)
-      .setColor('#57F287')
-      .setFooter({ text: config.serverName });
-
-    const sent = await user.send({ embeds: [embed] }).catch(() => null);
+    const sent = await user.send(formatted).catch(() => null);
     if (!sent) {
       return interaction.reply({ content: '❌ Impossible d\'envoyer le message (MP fermés côté joueur).', ephemeral: true });
     }
 
-    await interaction.reply({ embeds: [embed] });
+    await interaction.reply(formatted);
   }
 };
