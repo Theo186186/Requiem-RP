@@ -41,6 +41,6 @@ module.exports = {
       return interaction.reply({ content: '❌ Impossible d\'envoyer le message (MP fermés côté joueur).', ephemeral: true });
     }
 
-    await interaction.reply({ content: '✅ Message envoyé au joueur.', ephemeral: true });
+    await interaction.reply({ embeds: [embed] });
   }
 };
