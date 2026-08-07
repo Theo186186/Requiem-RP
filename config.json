@@ -1,16 +1,16 @@
 {
   "serverName": "Requiem RP",
 
-  "ownerId": "TON_ID_DISCORD",
+  "ownerId": "1249443311081492512",
 
-  "allowedRoleIds": ["ID_ROLE_AUTORISE_1"],
+  "allowedRoleIds": ["1495448280916824269"],
 
-  "mainGuildId": "ID_SERVEUR_RP_PRINCIPAL",
-  "ticketGuildId": "ID_SERVEUR_STAFF_TICKETS",
+  "mainGuildId": "1495448280874614825",
+  "ticketGuildId": "1496879753922351156",
 
   "autoRole": {
     "enabled": true,
-    "roleId": "ID_ROLE_CITOYEN"
+    "roleId": "1495448280874614827"
   },
 
   "antiAbuse": {
@@ -21,14 +21,14 @@
   },
 
   "welcome": {
-    "channelId": "ID_SALON_BIENVENUE",
+    "channelId": "1495448281688314132",
     "serverInviteName": "requiemrp"
   },
 
-  "tickets": {
-    "panelChannelId": "ID_SALON_OU_ENVOYER_LE_PANEL",
-    "logsChannelId": "ID_SALON_LOGS_TICKETS_SUR_SERVEUR_STAFF",
-    "staffRoleIds": ["ID_ROLE_STAFF_SUR_SERVEUR_STAFF"],
+ "tickets": {
+    "panelChannelId": "1495448282737016924",
+    "logsChannelId": "1535364840925831249",
+    "staffRoleIds": ["1496882039964565617"],
     "embed": {
       "title": "🎫 Tickets - Besoin d'aide | Requiem RP",
       "description": "❓ **BESOIN D'UNE ASSISTANCE ?**\n\n💡 Un problème en jeu ? Privilégiez le report In-Game si une présence sur Discord n'est pas obligatoire.\n\n📜 **Règles d'ouverture de ticket :**\n🔹 **Soyez précis** : Expliquez clairement votre demande dès le départ pour un traitement plus rapide.\n🔹 **Respect & Politesse** : Le staff est humain. Un bonjour/merci est le minimum attendu.\n🔹 **Patience** : Inutile de spam ou de ping, votre demande sera traitée dès qu'un membre sera disponible.",
@@ -36,41 +36,76 @@
       "color": "#006f82",
       "imageUrl": ""
     },
-    "categories": [
+   "categories": [
       {
         "id": "legal",
         "label": "Légal",
         "emoji": "⚖️",
         "description": "Problème légal / juridique",
-        "categoryChannelId": "ID_CATEGORIE_SUR_SERVEUR_STAFF_LEGAL"
+        "categoryChannelId": "1498084018548375692"
       },
       {
         "id": "illegal",
         "label": "Illégal",
         "emoji": "🚫",
         "description": "Signaler une activité illégale",
-        "categoryChannelId": "ID_CATEGORIE_SUR_SERVEUR_STAFF_ILLEGAL"
+        "categoryChannelId": "1496880366529679580"
       },
       {
         "id": "remboursement",
         "label": "Remboursement",
         "emoji": "💰",
-        "description": "Demande de remboursement",
-        "categoryChannelId": "ID_CATEGORIE_SUR_SERVEUR_STAFF_REMBOURSEMENT"
+        "description": "Demande de remboursement (preuve requis)",
+        "categoryChannelId": "1496880285415899187"
       },
       {
         "id": "recrutement",
         "label": "Recrutement",
         "emoji": "📋",
         "description": "Candidature staff / recrutement",
-        "categoryChannelId": "ID_CATEGORIE_SUR_SERVEUR_STAFF_RECRUTEMENT"
+        "categoryChannelId": "1498005028328177755"
+      },
+      {
+        "id": "boutique",
+        "label": "Boutique",
+        "emoji": "🛒",
+        "description": "Question ou achat VIP / Boutique",
+        "categoryChannelId": "1496880154017009790"
+      },
+      {
+        "id": "question",
+        "label": "Demande / Question",
+        "emoji": "❓",
+        "description": "Besoin d'aide ou renseignement",
+        "categoryChannelId": "1496880630863237311"
+      },
+      {
+        "id": "plainte_joueur",
+        "label": "Plainte Joueur",
+        "emoji": "🚫",
+        "description": "Signaler un comportement / joueur",
+        "categoryChannelId": "1496880533525893251"
+      },
+      {
+        "id": "plainte_staff",
+        "label": "Plainte Staff",
+        "emoji": "⚖️",
+        "description": "Litige ou problème avec un staff",
+        "categoryChannelId": "1496880574776869015"
+      },
+      {
+        "id": "wipe",
+        "label": "Wipe",
+        "emoji": "🔄",
+        "description": "Demande de wipe ou reset de personnage",
+        "categoryChannelId": "1499015177960423535"
       },
       {
         "id": "debannissement",
         "label": "Débannissement",
         "emoji": "🔓",
         "description": "Demande de débannissement",
-        "categoryChannelId": "ID_CATEGORIE_SUR_SERVEUR_STAFF_DEBAN"
+        "categoryChannelId": "1496880240033529907"
       }
     ]
   }
