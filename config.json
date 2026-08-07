@@ -1,0 +1,77 @@
+{
+  "serverName": "Requiem RP",
+
+  "ownerId": "TON_ID_DISCORD",
+
+  "allowedRoleIds": ["ID_ROLE_AUTORISE_1"],
+
+  "mainGuildId": "ID_SERVEUR_RP_PRINCIPAL",
+  "ticketGuildId": "ID_SERVEUR_STAFF_TICKETS",
+
+  "autoRole": {
+    "enabled": true,
+    "roleId": "ID_ROLE_CITOYEN"
+  },
+
+  "antiAbuse": {
+    "logChannelId": "ID_SALON_LOGS_MODERATION",
+    "banKick": { "maxActions": 3, "windowMinutes": 60 },
+    "deletions": { "maxActions": 2, "windowMinutes": 60 },
+    "pingSpam": { "maxActions": 5, "windowMinutes": 1 }
+  },
+
+  "welcome": {
+    "channelId": "ID_SALON_BIENVENUE",
+    "serverInviteName": "requiemrp"
+  },
+
+  "tickets": {
+    "panelChannelId": "ID_SALON_OU_ENVOYER_LE_PANEL",
+    "logsChannelId": "ID_SALON_LOGS_TICKETS_SUR_SERVEUR_STAFF",
+    "staffRoleIds": ["ID_ROLE_STAFF_SUR_SERVEUR_STAFF"],
+    "embed": {
+      "title": "🎫 Tickets - Besoin d'aide | Requiem RP",
+      "description": "❓ **BESOIN D'UNE ASSISTANCE ?**\n\n💡 Un problème en jeu ? Privilégiez le report In-Game si une présence sur Discord n'est pas obligatoire.\n\n📜 **Règles d'ouverture de ticket :**\n🔹 **Soyez précis** : Expliquez clairement votre demande dès le départ pour un traitement plus rapide.\n🔹 **Respect & Politesse** : Le staff est humain. Un bonjour/merci est le minimum attendu.\n🔹 **Patience** : Inutile de spam ou de ping, votre demande sera traitée dès qu'un membre sera disponible.",
+      "footerText": "• L'équipe Staff Requiem RP 🖤",
+      "color": "#006f82",
+      "imageUrl": ""
+    },
+    "categories": [
+      {
+        "id": "legal",
+        "label": "Légal",
+        "emoji": "⚖️",
+        "description": "Problème légal / juridique",
+        "categoryChannelId": "ID_CATEGORIE_SUR_SERVEUR_STAFF_LEGAL"
+      },
+      {
+        "id": "illegal",
+        "label": "Illégal",
+        "emoji": "🚫",
+        "description": "Signaler une activité illégale",
+        "categoryChannelId": "ID_CATEGORIE_SUR_SERVEUR_STAFF_ILLEGAL"
+      },
+      {
+        "id": "remboursement",
+        "label": "Remboursement",
+        "emoji": "💰",
+        "description": "Demande de remboursement",
+        "categoryChannelId": "ID_CATEGORIE_SUR_SERVEUR_STAFF_REMBOURSEMENT"
+      },
+      {
+        "id": "recrutement",
+        "label": "Recrutement",
+        "emoji": "📋",
+        "description": "Candidature staff / recrutement",
+        "categoryChannelId": "ID_CATEGORIE_SUR_SERVEUR_STAFF_RECRUTEMENT"
+      },
+      {
+        "id": "debannissement",
+        "label": "Débannissement",
+        "emoji": "🔓",
+        "description": "Demande de débannissement",
+        "categoryChannelId": "ID_CATEGORIE_SUR_SERVEUR_STAFF_DEBAN"
+      }
+    ]
+  }
+}
