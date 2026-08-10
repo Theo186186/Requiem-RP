@@ -9,10 +9,12 @@ module.exports = {
   async execute(interaction) {
     try {
       if (interaction.isChatInputCommand()) {
-        if (!canUseBot(interaction, config)) {
+        const scope = interaction.guildId === config.ticketGuildId ? 'ticket' : 'main';
+        // La restriction par rôle ne s'applique qu'aux commandes du serveur principal.
+        // Sur le serveur staff (tickets), tout le monde peut utiliser les commandes (ex: /msg).
+        if (scope === 'main' && !canUseBot(interaction, config)) {
           return interaction.reply({ content: "⛔ Tu n'as pas la permission d'utiliser cette commande.", ephemeral: true });
         }
-        const scope = interaction.guildId === config.ticketGuildId ? 'ticket' : 'main';
         const command = interaction.client.commands.get(`${scope}:${interaction.commandName}`);
         if (!command) return;
         await command.execute(interaction);
@@ -38,6 +40,7 @@ module.exports = {
           return interaction.reply({ content: '❌ Session expirée, relance la commande /msg.', ephemeral: true });
         }
         deletePending(interaction.user.id);
+        await interaction.deferReply({ ephemeral: true });
 
         const text = interaction.fields.getTextInputValue('panel_message');
         const embed = new EmbedBuilder().setDescription(text).setColor(pending.color);
@@ -48,13 +51,17 @@ module.exports = {
         if (channel) {
           await channel.send({ embeds: [embed] }).catch((err) => console.error('[Msg Annonce] Erreur:', err.message));
         }
-        await interaction.reply({ content: '✅ Message envoyé.', ephemeral: true });
+        await interaction.editReply({ content: '✅ Message envoyé.' });
         return;
       }
     } catch (err) {
       console.error('[Interaction] Erreur:', err);
-      if (interaction.isRepliable() && !interaction.replied && !interaction.deferred) {
-        interaction.reply({ content: '❌ Une erreur est survenue.', ephemeral: true }).catch(() => null);
+      if (interaction.isRepliable()) {
+        if (interaction.deferred && !interaction.replied) {
+          interaction.editReply({ content: '❌ Une erreur est survenue.' }).catch(() => null);
+        } else if (!interaction.replied) {
+          interaction.reply({ content: '❌ Une erreur est survenue.', ephemeral: true }).catch(() => null);
+        }
       }
     }
   }
