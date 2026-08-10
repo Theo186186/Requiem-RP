@@ -47,32 +47,29 @@ async function createTicket(interaction, categoryConfig, config) {
   data.counter += 1;
   const ticketNumber = data.counter;
 
-  const permissionOverwrites = [
-    { id: ticketGuild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] }
-  ];
-  for (const roleId of config.tickets.staffRoleIds) {
-    if (roleId && !roleId.startsWith('ID_')) {
-      permissionOverwrites.push({
-        id: roleId,
-        allow: [
-          PermissionFlagsBits.ViewChannel,
-          PermissionFlagsBits.SendMessages,
-          PermissionFlagsBits.ReadMessageHistory,
-          PermissionFlagsBits.ManageChannels
-        ]
-      });
-    }
-  }
-
   const parent = categoryConfig.categoryChannelId.startsWith('ID_') ? null : categoryConfig.categoryChannelId;
 
   const channel = await ticketGuild.channels.create({
     name: `${categoryConfig.id}-${ticketNumber}`,
     type: ChannelType.GuildText,
     parent,
-    permissionOverwrites,
     topic: `Ticket #${ticketNumber} | ${categoryConfig.label} | ${user.tag} (${user.id})`
   });
+
+  // Synchronise les permissions du salon avec celles de la catégorie parente
+  if (parent) {
+    await channel.lockPermissions().catch((err) =>
+      console.error('[Ticket] Impossible de synchroniser les permissions avec la catégorie:', err.message)
+    );
+  }
+
+  // Ajoute l'accès du joueur par-dessus la synchronisation (lui seul, en plus du staff déjà autorisé par la catégorie)
+  await channel.permissionOverwrites.create(user.id, {
+    ViewChannel: true,
+    SendMessages: true,
+    ReadMessageHistory: true,
+    AttachFiles: true
+  }).catch((err) => console.error('[Ticket] Impossible de donner l\'accès au joueur:', err.message));
 
   data.openTickets[user.id] = {
     channelId: channel.id,
@@ -82,11 +79,6 @@ async function createTicket(interaction, categoryConfig, config) {
   };
   data.channelToUser[channel.id] = user.id;
   writeJSON('tickets.json', data);
-
-  const staffMentions = config.tickets.staffRoleIds
-    .filter((id) => id && !id.startsWith('ID_'))
-    .map((id) => `<@&${id}>`)
-    .join(' ');
 
   const staffEmbed = new EmbedBuilder()
     .setTitle(`${categoryConfig.emoji} Ticket #${ticketNumber} - ${categoryConfig.label}`)
@@ -98,7 +90,7 @@ async function createTicket(interaction, categoryConfig, config) {
     .setColor(config.tickets.embed.color || '#5865F2')
     .setTimestamp();
 
-  await channel.send({ content: staffMentions || undefined, embeds: [staffEmbed], components: [closeButtonRow()] })
+  await channel.send({ embeds: [staffEmbed], components: [closeButtonRow()] })
     .catch((err) => console.error('[Ticket] Impossible d\'envoyer dans le salon staff (permissions ?):', err.message));
 
   if (config.tickets.logsChannelId && !config.tickets.logsChannelId.startsWith('ID_')) {
